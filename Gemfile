@@ -34,6 +34,5 @@ group :test, :development do
 end
 
 group :development do
-  gem 'af'
-  gem 'caldecott', '~> 0.0.5'
+  gem 'capistrano'
 end
