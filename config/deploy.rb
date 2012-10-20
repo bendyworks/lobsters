@@ -85,6 +85,10 @@ namespace :sphinx do
     run "service sphinxsearch stop"
   end
 
+  task :configure, :roles => [:app] do
+    run "if [ -d #{release_path} ]; then cd #{release_path}; else cd #{current_path}; fi; if [ -f Rakefile ]; then RAILS_ENV=production bundle exec rake thinking_sphinx:configure; fi;"
+  end
+
 end
 
 # Add Configuration Files & Compile Assets
@@ -99,9 +103,9 @@ after 'deploy:update_code' do
 
 end
 
-before 'deploy:update_code', 'sphinx:system_stop'
-
+after 'deploy:update_code', 'sphinx:system_stop'
 after 'deploy:update_code', 'sphinx:symlink_indexes'
+after 'deploy:update_code', 'sphinx:configure'
 after 'deploy:update_code', 'sphinx:system_start'
 
 
