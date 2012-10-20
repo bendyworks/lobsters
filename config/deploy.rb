@@ -71,14 +71,20 @@ set :branch,     "makemadison"
 role :app, LINODE_SERVER_HOSTNAME
 role :db,  LINODE_SERVER_HOSTNAME, :primary => true
 
-before 'deploy:update_code', 'thinking_sphinx:stop'
-after  'deploy:update_code', 'thinking_sphinx:start'
-
 namespace :sphinx do
   desc 'Symlink Sphinx indexes'
   task :symlink_indexes, :roles => [:app] do
     run "ln -nfs #{shared_path}/db/sphinx #{release_path}/db/sphinx"
   end
+
+  task :system_start, :roles => [:app] do
+    run "service sphinxsearch start"
+  end
+
+  task :system_stop, :roles => [:app] do
+    run "service sphinxsearch stop"
+  end
+
 end
 
 # Add Configuration Files & Compile Assets
@@ -90,9 +96,14 @@ after 'deploy:update_code' do
 
   # Compile Assets
   run "cd #{release_path}; RAILS_ENV=production bundle exec rake assets:precompile"
+
 end
 
-after 'deploy:finalize_update', 'sphinx:symlink_indexes'
+before 'deploy:update_code', 'sphinx:system_stop'
+
+after 'deploy:update_code', 'sphinx:symlink_indexes'
+after 'deploy:update_code', 'sphinx:system_start'
+
 
 # Restart Passenger
 deploy.task :restart, :roles => :app do

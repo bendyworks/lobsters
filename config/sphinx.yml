@@ -2,7 +2,7 @@ production:
   address: 127.0.0.1
   port: 9313
   min_infix_len: 2
-  searchd_file_path: /var/www/apps/makemadison/shared/db/sphinx
+  searchd_file_path: /var/www/apps/makemadison/shared/db/sphinx/production
 
 development:
   min_infix_len: 2
