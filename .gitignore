@@ -18,7 +18,6 @@
 /tmp
 
 vendor/bundle
-public/assets
 
 # files added in production
 lib/tasks/deploy.rake
