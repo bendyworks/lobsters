@@ -1,3 +1,5 @@
+require_relative 'credentials' rescue nil
+
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'

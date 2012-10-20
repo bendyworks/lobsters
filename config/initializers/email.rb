@@ -1,6 +1,9 @@
 ActionMailer::Base.smtp_settings = {
-  :address => "127.0.0.1",
-  :port => 25,
-  :domain => "lobste.rs",
-  :enable_starttls_auto => false,
+  :user_name => 'bendyworks',
+  :password  => ENV['SENDGRID_PASSWORD'],
+  :domain => "makemadison.com",
+  :address => "smtp.sendgrid.net",
+  :port => 587,
+  :authentication => :plain,
+  :enable_starttls_auto => true
 }
