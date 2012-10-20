@@ -32,3 +32,8 @@ group :test, :development do
   gem "machinist"
   gem "sqlite3"
 end
+
+group :development do
+  gem 'af'
+  gem 'caldecott', '~> 0.0.5'
+end
