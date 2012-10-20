@@ -3,7 +3,7 @@ class PasswordReset < ActionMailer::Base
     @user = user
     @ip = ip
 
-    mail(:to => user.email, :from => "Lobsters <nobody@lobste.rs>",
-      :subject => "[Lobsters] Reset your password")
+    mail(:to => user.email, :from => "MakeMadison <contact@makemadison.com>",
+      :subject => "[MakeMadison] Reset your password")
   end
 end

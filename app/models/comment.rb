@@ -109,7 +109,7 @@ class Comment < ActiveRecord::Base
 
           if u.pushover_mentions? && u.pushover_user_key.present?
             Pushover.push(u.pushover_user_key, u.pushover_device, {
-              :title => "Lobsters mention by #{self.user.username} on " <<
+              :title => "MakeMadison mention by #{self.user.username} on " <<
                 self.story.title,
               :message => self.plaintext_comment,
               :url => self.url,
@@ -133,7 +133,7 @@ class Comment < ActiveRecord::Base
 
         if u.pushover_replies? && u.pushover_user_key.present?
           Pushover.push(u.pushover_user_key, u.pushover_device, {
-            :title => "Lobsters reply from #{self.user.username} on " <<
+            :title => "MakeMadison reply from #{self.user.username} on " <<
               "#{self.story.title}",
             :message => self.plaintext_comment,
             :url => self.url,
