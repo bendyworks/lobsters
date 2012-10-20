@@ -1,4 +1,5 @@
 require 'bundler/capistrano'
+require 'thinking_sphinx/deploy/capistrano'
 
 # This capistrano deployment recipe is made to work with the optional
 # StackScript provided to all Rails Rumble teams in their Linode dashboard.
@@ -70,6 +71,16 @@ set :branch,     "makemadison"
 role :app, LINODE_SERVER_HOSTNAME
 role :db,  LINODE_SERVER_HOSTNAME, :primary => true
 
+before 'deploy:update_code', 'thinking_sphinx:stop'
+after  'deploy:update_code', 'thinking_sphinx:start'
+
+namespace :sphinx do
+  desc 'Symlink Sphinx indexes'
+  task :symlink_indexes, :roles => [:app] do
+    run "ln -nfs #{shared_path}/db/sphinx #{release_path}/db/sphinx"
+  end
+end
+
 # Add Configuration Files & Compile Assets
 after 'deploy:update_code' do
   # Setup Configuration
@@ -80,6 +91,8 @@ after 'deploy:update_code' do
   # Compile Assets
   run "cd #{release_path}; RAILS_ENV=production bundle exec rake assets:precompile"
 end
+
+after 'deploy:finalize_update', 'sphinx:symlink_indexes'
 
 # Restart Passenger
 deploy.task :restart, :roles => :app do
